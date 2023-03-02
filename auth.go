@@ -3,7 +3,6 @@ package auth
 import (
 	"encoding/json"
 	"io/ioutil"
-	"log"
 	"net/http"
 	"net/http/cookiejar"
 	"net/url"
@@ -195,8 +194,6 @@ func (a *userAuth) step1Auth0(csrfToken string) {
 		return
 	}
 
-	log.Printf("code: %d", response.StatusCode)
-
 	var auth0Response auth0Response
 	err = getResponseObject(response, &auth0Response)
 	if err != nil {
@@ -293,7 +290,6 @@ func (a *userAuth) step4GetIdentifyEmail(state string) {
 	payload.Set("webauthn-platform-available", "true")
 	payload.Set("action", "default")
 
-	log.Printf("payload: %s", payload.Encode())
 	req, err := http.NewRequest(http.MethodPost, link, strings.NewReader(payload.Encode()))
 	if err != nil {
 		a.err = err
